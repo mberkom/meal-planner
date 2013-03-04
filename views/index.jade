@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  div(ng-app="home")
+    h1= title
+    p Plan meals with ease.
+
+    .btn-toolbar(ng-controller="BtnCtrl")
+      a.btn.btn-success(href="#", ng-click="createGroupMeal()") Create Group Meal
+      a.btn.btn-info(href="#", ng-click="createMealSchedule()") Create Meal Schedule

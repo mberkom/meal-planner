@@ -1,0 +1,18 @@
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-responsive.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script
+      var require = {
+        paths: {
+          "angular":      "/javascripts/lib/angular",
+          "lodash":       "/javascripts/lib/lodash",
+          "modules/home": "/javascripts/modules/home/app"
+        }
+      }
+    script(data-main="/javascripts/main", src="javascripts/lib/require.js")
+  body
+    block content
