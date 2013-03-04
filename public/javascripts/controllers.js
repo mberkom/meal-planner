@@ -3,7 +3,7 @@
  * Contains all the AngularJS controllers for the mealPlanner app.
  * @copyright Daniel Berkompas, 2013
  */
-define("controllers", ["angular", "routes"], function() {
+define("controllers", ["jquery", "angular", "routes"], function($) {
   var angular = window.angular;
 
   /*
@@ -18,11 +18,24 @@ define("controllers", ["angular", "routes"], function() {
      */
     $scope.addMealItem = function() {
       $scope.mealItems.push({
-        name: "Caviar",
-        who_name: "Another Dude",
-        who_email: "another@dude.com"
+        name:     $scope.newItemName,
+        quantity: $scope.newItemQuantity || 0,
+        assigned: $scope.newItemAssigned,
+        isEditing: false
       });
+      _clearNewItemData();
+      _focus("newItemName");
     };
+
+    /*
+     * Public: Remove a meal from the mealItems array.
+     *
+     * item - The item Object to remove from the array.
+     */
+    $scope.removeMealItem = function(item) {
+      $scope.mealItems.push.apply($scope.mealItems.splice($scope.mealItems.indexOf(item), $scope.mealItems.length));
+      _focus("newItemName");
+    }
 
     /*
      * Public: Save the group meal to the API.
@@ -30,6 +43,22 @@ define("controllers", ["angular", "routes"], function() {
     $scope.save = function() {
       alert("I'm being saved!");
     };
+
+    /*
+     * Private: Clear the new meal item data.
+     */
+    function _clearNewItemData() {
+      $scope.newItemName     = null;
+      $scope.newItemQuantity = null;
+      $scope.newItemAssigned = null;
+    }
+
+    /*
+     * Private: Focus on an element of the view.
+     */
+    function _focus(model_name) {
+      $("[ng-model=" + model_name +"]").focus();
+    }
   });
 
   /*

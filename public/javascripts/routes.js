@@ -11,7 +11,8 @@ define("routes", ["angular"], function() {
 
     // Configure the routes
     $routeProvider
-    .when("/group/new", { templateUrl: baseUrl + "new_group.html", controller: "NewGroupMealCtrl" })
+    .when("/group/new", { templateUrl: baseUrl + "group/new.html", controller: "NewGroupMealCtrl" })
+    .when("/scheduled/new", { templateUrl: baseUrl + "scheduled/new.html", controller: "NewScheduledMealCtrl" })
     .otherwise({ redirectTo: "/", templateUrl: baseUrl + "start.html" })
     
   }]);

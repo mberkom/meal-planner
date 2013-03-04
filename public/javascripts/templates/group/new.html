@@ -1,0 +1,91 @@
+<ul class="breadcrumb">
+  <li><a href="#/">Home</a> <span class="divider">></span></li>
+  <li class="active">Create Group Meal</li>
+</ul>
+
+<!-- Info Fields -->
+<h1>Create a Group Meal</h1>
+<div class="row-fluid">  
+
+  <div class="span4">  
+    <label for="name">Name Your Meal:</label>
+    <input type="text" id="name" class="span12 input-large" ng-model="name" placeholder="e.g. 'Amy's Baby Shower'" />
+  </div>
+
+  <div class="span4">  
+    <label for="date">When is it happening?</label>
+    <input type="text" datepicker id="date" class="span12 input-large" ng-model="date" placeholder="Click to add a date" />
+  </div>
+
+  <div class="span4">  
+    <label for="where">Where:</label>
+    <input type="text" id="where" class="span12 input-large" ng-model="where" placeholder="Put the location here" />
+  </div>
+</div>
+<!-- End Info Fields -->
+
+<!-- Meal Items -->
+<div class="row-fluid">
+  <h3>Items</h3>
+  <p>What food do you need everyone to bring?</p>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Assigned To</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <form ng-submit="addMealItem()">
+          <td><input type="text" class="span12" ng-model="newItemName" placeholder="Name of food item here" /></td>
+          <td><input type="number" class="span12" ng-model="newItemQuantity" /><p class="centered muted">Press enter to add item</p></td>
+          <td>
+            <input type="text" class="span12" ng-model="newItemAssigned" placeholder="Leave blank to let anyone claim" />
+            <input type="submit" class="btn" style="visibility:hidden;" value="Add" />
+          </td>
+        </form>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr ng-repeat="item in mealItems">   
+        <td>
+          <span ng-show="!item.isEditing">{{item.name}}</span>
+          <span ng-show="item.isEditing">
+            <input type="text" class="span12" ng-model="item.name" />
+          </span>
+        </td>
+        <td>
+          <span ng-show="!item.isEditing">{{item.quantity}}</span>
+          <span ng-show="item.isEditing">
+            <input type="number" class="span12" ng-model="item.quantity" />
+          </span>
+        </td>
+        <td>
+          <span ng-show="!item.isEditing">
+            {{item.assigned || "No One"}}
+            <span class="pull-right">
+              <a onclick="preventDefault()" class="text-error" ng-click="removeMealItem(item)">X Remove</a>
+            </span>
+          </span>
+          <span ng-show="item.isEditing">
+            <input type="text" class="span12" ng-model="item.assigned" />
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- End Meal Items -->
+
+<!-- Email Addresses to Notify -->
+<h3>Invite People</h3>
+<div class="row-fluid">
+  <p>Get the word out about the meal!  Make sure to email the people you assigned.</p>
+</div>
+
+<!-- End Email Addresses to Notify -->
+<div class="btn-toolbar">
+  <a onclick="preventDefault()" ng-click="save()" class="btn btn-success btn-large">Save Group Meal</a>
+</div>
