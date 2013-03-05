@@ -5,7 +5,7 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  , meal = require('./routes/meal')
   , http = require('http')
   , path = require('path');
 
@@ -28,7 +28,9 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
-app.get('/users', user.list);
+app.get('/api/meals.json', meal.list);
+app.post('/api/meals.json', meal.create);
+app.get('/api/meals/:id.json', meal.show);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

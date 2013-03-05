@@ -69,7 +69,7 @@
 <div class="row-fluid">
   <p>Get the word out about the meal!  Add the emails of the people you want be notified below.</p>
 </div>
-<h5 ng-show="emails.length > 0">Invited People</h4>
+<h5 ng-show="emails.length > 0">Invited People</h5>
 <ul class="unstyled">
   <li ng-repeat="email in emails">{{email}} <a class="text-error" ng-click="removeEmail(email)">x</a></li>
 </ul>
@@ -81,6 +81,6 @@
 
 <!-- Save Group Meal -->
 <div class="btn-toolbar">
-  <a onclick="preventDefault()" ng-click="save()" class="btn btn-success btn-large">Create Meal &amp; Send Emails</a>
+  <a ng-click="save()" class="btn btn-success btn-large">Create Meal &amp; Send Emails</a>
   <a ng-click="cancel()" class="btn btn-large">Cancel</a>
 </div>

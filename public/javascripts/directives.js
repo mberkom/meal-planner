@@ -1,12 +1,9 @@
-/*
- * mealPlanner Directives
- * Contains all the AngularJS directives for the mealPlanner app.
- * @copyright Daniel Berkompas, 2013
- */
-define("directives", ["jquery", "jquery-ui", "angular"], function($) {
+define("directives", ["angular"], function() {
   var angular = window.angular;
-  directives = angular.module("mealPlanner");
 
+  // Create directives module
+  angular.module("directives", []);
+  
   /*
    * Public: Datepicker Directive
    * Binds a jQuery UI datepicker to the given element.
@@ -14,7 +11,7 @@ define("directives", ["jquery", "jquery-ui", "angular"], function($) {
    * Examples:
    *   <input type="text" datepicker ng-model="date" />
    */
-  directives.directive('datepicker', function($parse) {
+  angular.module("directives").directive('datepicker', function($parse) {
     return function (scope, element, attrs, controller) {
       var ngModel = $parse(attrs.ngModel);
       $(function(){

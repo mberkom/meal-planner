@@ -1,0 +1,27 @@
+<h1>{{meal.name}}</h1>
+<h4 class="subtitle muted">{{meal.location}}, {{meal.date}}</h4>
+
+<!-- Meal Items -->
+<div class="row-fluid">
+  <h3>Items</h3>
+  <div class="alert alert-info">
+    The following items need to be brought.  Click on "I'm bringing this" to tell the organizer it is being brought.
+  </div>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th class="span1">Quantity</th>
+        <th>Item</th>
+        <th>Assigned To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in meal.mealItems">   
+        <td><span class="centered">{{item.quantity}}</span></td>
+        <td>{{item.name}}</td>
+        <td>{{item.assigned || "No One"}} <a ng-show="!item.assigned" class="btn btn-info pull-right">I'm Bringing This</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- End Meal Items -->
