@@ -1,5 +1,5 @@
 # Meal Planner
-A meal planning app written entirely in Javascript.  [Node.js](http://nodejs.org) on the backend, [AngularJS](http://angularjs.org) on the front end, and [MongoDB](http://mongodb.org) for the database.
+A meal planning app written entirely in Javascript.  [Node.js](http://nodejs.org) on the backend, [AngularJS](http://angularjs.org) and [RequireJS](http://requirejs.org) on the front end, and [MongoDB](http://mongodb.org) for the database.
 
 ## Installation
 All installation steps assume that you have [Homebrew](http://mxcl.github.com/homebrew/) installed.
