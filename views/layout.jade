@@ -12,6 +12,8 @@ html
           "angular":          "/javascripts/lib/angular",
           "angular-resource": "/javascripts/lib/angular-resource",
           "lodash":           "/javascripts/lib/lodash",
+          "bootstrap":        "/javascripts/lib/bootstrap.min",
+          "bootbox":          "/javascripts/lib/bootbox.min",
           "jquery":           "http://code.jquery.com/jquery-1.9.1.min",
           "jquery-ui":        "http://code.jquery.com/ui/1.10.1/jquery-ui"
         },
@@ -21,6 +23,12 @@ html
           },
           "angular-resource": {
             deps: ["angular"]
+          },
+          "bootstrap": {
+            deps: ["jquery"]
+          },
+          "bootbox": {
+            deps: ["bootstrap"]
           }
         }
       }

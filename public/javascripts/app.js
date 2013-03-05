@@ -13,9 +13,9 @@ define("app", ["jquery", "lodash", "jquery-ui", "angular", "controllers", "direc
   angular.module(appName, ["services", "controllers", "directives"]).
   config(function($routeProvider) {
     $routeProvider.
-    when("/group/new", { templateUrl: baseUrl + "group/new.html", controller: "NewGroupMealCtrl" }).
+    when("/group/new",     { templateUrl: baseUrl + "group/new.html", controller: "NewGroupMealCtrl" }).
     when("/scheduled/new", { templateUrl: baseUrl + "scheduled/new.html", controller: "NewScheduledMealCtrl" }).
-    when("/meals/:id", { templateUrl: baseUrl + "group/show.html", controller: "ShowMealCtrl" }).
+    when("/meals/:id",     { templateUrl: baseUrl + "group/show.html", controller: "ShowMealCtrl" }).
     otherwise({ redirectTo: "/", templateUrl: baseUrl + "start.html" })
   });
 

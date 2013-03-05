@@ -1,5 +1,11 @@
-define("controllers", ["jquery", "lodash", "angular", "services"], function($, _) {
-  var angular = window.angular;
+/*
+ * Controllers Module
+ * AngularJS controllers for mealPlanner module.
+ * @copyright Daniel Berkompas, 2013
+ */
+define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], function($, _, bootbox) {
+  var angular = window.angular
+    , bootbox = window.bootbox;
 
   // Configure controller dependencies
   angular.module("controllers", ["services"]);
@@ -86,20 +92,15 @@ define("controllers", ["jquery", "lodash", "angular", "services"], function($, _
      * Public: Clear local storage and go back to path "/".
      */
     $scope.cancel = function() {
-      cancel = confirm("Are you sure you want to cancel and go back to the home page?  You have unsaved changes.");
-      if(cancel) {      
-        _clearLocalStorage();
-        $location.path("/");
-      }
+      var warningText = "Are you sure you want to cancel and go back to the home page?  You have unsaved changes.";
+      bootbox.confirm(warningText, function(cancel) {      
+        if(cancel === true) {
+          _clearLocalStorage();
+          $location.path("/").replace();
+          $scope.$apply();
+        };
+      });
     };
-
-    /*
-     * Internal: Watch redirectPath to redirect when $location 
-     * doesn't work.
-     */
-    $scope.$watch("redirectPath", function(result) {
-      if(result !== null) $location.path(result);
-    });
 
     /*
      * Internal: Watch toJson() and update localStorage.
@@ -137,7 +138,19 @@ define("controllers", ["jquery", "lodash", "angular", "services"], function($, _
    * Displays meals based on an ID.
    */
   angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, Meal) {
-    $scope.meal = Meal.get({id: $routeParams.id});
+    _loadMeal();
+
+    /*
+     * Private: Load the meal. Automatically polls again after
+     * 3 seconds to make sure the page stays updated.
+     */
+    function _loadMeal() {
+      if($routeParams.id != null) {      
+        $scope.meal = Meal.get({id: $routeParams.id});
+        window.setTimeout(_loadMeal, 3000);
+      }
+    };
+
   });
 
   /*
