@@ -13,7 +13,6 @@ var mealSchema = new Schema({
   name:     String,
   date:     String,
   location: String,
-  emails:   [String],
   mealItems: [{
     quantity: Number,
     name:     String,

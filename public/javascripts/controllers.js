@@ -21,7 +21,6 @@ define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], fu
     $scope.date       = storedMeal.date;
     $scope.location   = storedMeal.location;
     $scope.mealItems  = storedMeal.mealItems || [];
-    $scope.emails     = storedMeal.emails || [];
     $scope.redirectPath = null;
 
     /*

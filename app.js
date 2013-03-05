@@ -4,10 +4,11 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , meal = require('./routes/meal')
-  , http = require('http')
-  , path = require('path');
+  , routes  = require('./routes')
+  , meal    = require('./routes/meal')
+  , http    = require('http')
+  , path    = require('path')
+  , gzippo  = require('gzippo');
 
 var app = express();
 
@@ -20,12 +21,16 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+  app.use(express.static(path.join(__dirname, 'public')));
 });
+
+app.configure('production', function() {
+  app.use(gzippo.staticGzip(path.join(__dirname, 'public')));
+})
 
 app.get('/', routes.index);
 app.get('/api/meals.json', meal.list);
