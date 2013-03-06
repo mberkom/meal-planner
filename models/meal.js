@@ -4,8 +4,7 @@
  */
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    Schema   = mongoose.Schema;
 
 mongoose.connect('localhost', 'meal-planner');
 

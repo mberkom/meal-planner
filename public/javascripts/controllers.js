@@ -3,7 +3,14 @@
  * AngularJS controllers for mealPlanner module.
  * @copyright Daniel Berkompas, 2013
  */
-define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], function($, _, bootbox) {
+define("controllers", [
+  "jquery", 
+  "lodash", 
+  "bootstrap", 
+  "bootbox", 
+  "angular", 
+  "services"
+], function($, _, bootbox) {
   var angular = window.angular
     , bootbox = window.bootbox;
 
@@ -21,7 +28,6 @@ define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], fu
     $scope.date       = storedMeal.date;
     $scope.location   = storedMeal.location;
     $scope.mealItems  = storedMeal.mealItems || [];
-    $scope.redirectPath = null;
 
     /*
      * Public: Add a meal item to the mealItems array.
@@ -92,7 +98,7 @@ define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], fu
      */
     $scope.cancel = function() {
       var warningText = "Are you sure you want to cancel and go back to the home page?  You have unsaved changes.";
-      bootbox.confirm(warningText, function(cancel) {      
+      bootbox.confirm(warningText, "No", "Yes", function(cancel) {      
         if(cancel === true) {
           _clearLocalStorage();
           $location.path("/").replace();
@@ -140,16 +146,97 @@ define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], fu
     _loadMeal();
 
     /*
+     * Public: Start bringing an item.
+     */
+    $scope.startBringing = function(item) {
+      $scope.currentItem = item;
+      $scope.bringingQuantity = $scope.remainingQuantity(item);
+      _openBringingInterface();
+    };
+
+    /*
+     * Public: Abort bringing an item.
+     */
+    $scope.cancelBringing = function(item) {
+      $scope.currentItem = null;
+      _closeBringingInterface();
+    };
+
+    /*
+     * Public: Store the fact that someone is bringing a 
+     * quantity of an item.
+     */
+    $scope.bringCurrentItem = function() {
+      var item = $scope.currentItem;
+      if(item.bringers == null) item.bringers = [];
+      item.bringers.push({
+        quantity: $scope.bringingQuantity,
+        name:     $scope.userName,
+      });
+      $scope.currentItem = null;
+      $scope.bringingQuantity = null;
+      _closeBringingInterface();
+    };
+
+    /*
+     * Public: Determine remaining quantity for given item.
+     *
+     * item - An Object
+     *
+     * Returns a Number.
+     */
+    $scope.remainingQuantity = function(item) {
+      return item.quantity - _broughtQuantity(item);
+    };
+
+    /*
+     * Public: Determine total quantity for given item.
+     *
+     * item - An Object
+     *
+     * Returns a Number.
+     */
+    $scope.totalQuantity = function(item) {
+      return _broughtQuantity(item);
+    };
+
+    $scope.isFilledUp = function(item) {
+      return $scope.totalQuantity(item) >= item.quantity;
+    };
+
+    /*
      * Private: Load the meal. Automatically polls again after
      * 3 seconds to make sure the page stays updated.
      */
     function _loadMeal() {
       if($routeParams.id != null) {      
         $scope.meal = Meal.get({id: $routeParams.id});
-        window.setTimeout(_loadMeal, 3000);
+        // window.setTimeout(_loadMeal, 3000);
       }
     };
 
+    /*
+     * Private: Open interface to say you're bringing an item.
+     */
+    function _openBringingInterface() {
+      $("#bringItemModal").modal();
+    };
+
+    /*
+     * Private: Close interface to say you're bringing an item.
+     */
+    function _closeBringingInterface() {
+      $("#bringItemModal").modal('hide');
+    };
+
+    /*
+     * Private: Calculate the brought total, and return it
+     */
+    function _broughtQuantity(item) {
+      var broughtQuantity = 0;
+      _.forEach(item.bringers, function(bringer) { broughtQuantity = broughtQuantity + bringer.quantity });
+      return broughtQuantity;
+    };
   });
 
   /*
@@ -157,7 +244,6 @@ define("controllers", ["jquery", "lodash", "bootbox", "angular", "services"], fu
    * Handles creating new scheduled meals.
    */
   angular.module("controllers").controller("NewScheduledMealCtrl", function($scope) {
-
   });
 
 });
