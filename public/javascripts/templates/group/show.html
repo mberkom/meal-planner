@@ -37,7 +37,7 @@
         </td>
         <td>
           <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</h4>
-          <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-success pull-right">I'm Bringing This</a>
+          <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-cupid-green pull-right">I'm Bringing This</a>
           <ul class="unstyled" ng-repeat="bringer in item.bringers">
             <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
           </ul>
