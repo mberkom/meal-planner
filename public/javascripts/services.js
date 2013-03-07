@@ -18,6 +18,8 @@ define("services", ["angular", "angular-resource"], function() {
    * Returns a $resource factory.
    */
   angular.module("services", ['ngResource']).factory('Meal', function($resource) {
-    return $resource('/api/meals/:id.json');
+    return $resource('/api/meals/:id.json', {}, {
+      "update": { method: "PUT" }
+    });
   });
 });

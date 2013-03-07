@@ -23,14 +23,14 @@
         <td>
           <h4 ng-class="{'text-success': isFilledUp(item)}">
             {{item.name}}<br />
-            <small ng-show="isFilledUp(item)">Enough of this is being brought!</small>
+            <small ng-show="isFilledUp(item)">Enough of this item is being brought!</small>
           </h4>
         </td>
         <td>
           <span ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</span>
           <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-info pull-right">I'm Bringing This</a>
           <ul class="unstyled" ng-repeat="bringer in item.bringers">
-            <li>{{bringer.name}} - {{bringer.quantity}}</li>
+            <li>{{bringer.name}} - {{bringer.quantity}} <a class="text-error" ng-click="removeBringer(item, bringer)">x</a></li>
           </ul>
         </td>
       </tr>
@@ -47,17 +47,22 @@
   </div>
   <div class="modal-body">
     <h4>You are signing up to bring "{{currentItem.name}}".</h4>
+    <div class="alert alert-info" ng-show="isFilledUp(currentItem)">
+      Enough of this item is already being brought!  Someone signed up while you were waiting.
+    </div>
     
-    <label for="currentQuantity">How many are you bringing?</label>
-    <input type="number" id="currentQuantity" ng-model="bringingQuantity" />
-    <p class="help-text">Out of <strong>{{remainingQuantity(currentItem)}}</strong> remaining.</p>
+    <div ng-show="!isFilledUp(currentItem)">    
+      <label for="currentQuantity">How many are you bringing?</label>
+      <input type="number" id="currentQuantity" ng-model="bringingQuantity" />
+      <p class="help-text">Out of <strong>{{remainingQuantity(currentItem)}}</strong> remaining.</p>
 
-    <label for="userName">What is your name?</label>
-    <input type="text" id="userName" ng-model="userName" />
+      <label for="userName">What is your name?</label>
+      <input type="text" id="userName" ng-model="userName" />
+    </div>
   </div>
   <div class="modal-footer">
     <a class="btn" ng-click="cancelBringing()">Cancel</a>
-    <a class="btn btn-primary" ng-click="bringCurrentItem()">Bring This Item</a>
+    <a class="btn btn-primary" ng-show="!isFilledUp(currentItem)" ng-click="bringCurrentItem()">Bring This Item</a>
   </div>
 </div>
 <!-- End Bring Item Modal -->

@@ -8,15 +8,23 @@ var mongoose = require('mongoose'),
 
 mongoose.connect('localhost', 'meal-planner');
 
+var bringers = new Schema({
+  name:     String,
+  quantity: Number
+});
+
+var mealItems = new Schema({
+  quantity: Number,
+  name:     String,
+  assigned: String,
+  bringers: [bringers]
+});
+
 var mealSchema = new Schema({
   name:     String,
   date:     String,
   location: String,
-  mealItems: [{
-    quantity: Number,
-    name:     String,
-    assigned: String
-  }],
+  mealItems: [mealItems],
 });
 
 module.exports = mongoose.model('Meal', mealSchema);

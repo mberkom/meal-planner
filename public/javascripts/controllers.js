@@ -144,6 +144,7 @@ define("controllers", [
    */
   angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, Meal) {
     _loadMeal();
+    $scope.userName = window.localStorage['userName'] || null;
 
     /*
      * Public: Start bringing an item.
@@ -167,7 +168,7 @@ define("controllers", [
      * quantity of an item.
      */
     $scope.bringCurrentItem = function() {
-      var item = $scope.currentItem;
+      var item = _.find($scope.meal.mealItems, { _id: $scope.currentItem._id });
       if(item.bringers == null) item.bringers = [];
       item.bringers.push({
         quantity: $scope.bringingQuantity,
@@ -175,6 +176,7 @@ define("controllers", [
       });
       $scope.currentItem = null;
       $scope.bringingQuantity = null;
+      _saveMeal();
       _closeBringingInterface();
     };
 
@@ -186,6 +188,7 @@ define("controllers", [
      * Returns a Number.
      */
     $scope.remainingQuantity = function(item) {
+      if (item == null) return 0;
       return item.quantity - _broughtQuantity(item);
     };
 
@@ -200,18 +203,76 @@ define("controllers", [
       return _broughtQuantity(item);
     };
 
+    /*
+     * Public: Check if an item has its full quantity claimed.
+     *
+     * item - mealItem to check quantity for.  Assumes that it
+     *        contains a .bringers Array.
+     *
+     * Returns a Boolean.
+     */
     $scope.isFilledUp = function(item) {
+      if(typeof item === undefined || item == null) return false;
       return $scope.totalQuantity(item) >= item.quantity;
     };
+
+    /*
+     * Public: Remove a bringer from an item.
+     */
+    $scope.removeBringer = function(item, bringer) {
+      var originalBringers = item.bringers;
+      item.bringers = _.without(originalBringers, bringer);
+      _saveMeal();
+    };
+
+    /*
+     * Public: Convert the current meal to JSON.
+     *
+     * Returns a JSON string.
+     */
+    $scope.toJson = function() {
+      return angular.toJson($scope.meal);
+    };
+
+    /*
+     * Internal: Watch userName and update local storage.
+     */
+    $scope.$watch('userName', function(result) {
+      window.localStorage['userName'] = result;
+    });
 
     /*
      * Private: Load the meal. Automatically polls again after
      * 3 seconds to make sure the page stays updated.
      */
     function _loadMeal() {
-      if($routeParams.id != null) {      
-        $scope.meal = Meal.get({id: $routeParams.id});
-        // window.setTimeout(_loadMeal, 3000);
+      if($routeParams.id != null && !$scope.savingMeal == true) {      
+        $scope.meal = Meal.get({id: $routeParams.id}, function() {
+          _replaceCurrentItem();
+        });
+        window.setTimeout(_loadMeal, 5000);
+      }
+    };
+
+    /*
+     * Private: Save the meal.
+     */
+    function _saveMeal() {
+      console.log($scope.meal.mealItems);
+      $scope.meal.$update({id: $routeParams.id});
+      _loadMeal();
+    };
+
+    /*
+     * Private: Replace currentItem with updated version
+     */
+    function _replaceCurrentItem() {
+      var originalItem = $scope.currentItem;
+      if(!_.isUndefined(originalItem)) {
+        var newVersion = _.find($scope.meal.mealItems, function(i) { 
+          return i._id == originalItem._id 
+        });
+        $scope.currentItem = newVersion;
       }
     };
 

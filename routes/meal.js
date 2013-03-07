@@ -31,3 +31,16 @@ exports.create = function(req, res) {
     res.json(200, { status: 200, message: "Meal successfully saved.", meal: meal });
   });
 };
+
+/*
+ * Updates an existing meal.
+ */
+exports.update = function(req, res) {
+  var json = req.body;
+  delete json._id;
+
+  Meal.update({_id: req.params.id}, json, { multi: true }, function(err, numAffected) {
+    if(err || numAffected === 0) res.json(500, { status: 500, message: "Could not update meal. No meal with that ID exists." });
+    res.json(200, { status: 200, message: "Meal successfully updated." });
+  });
+};
