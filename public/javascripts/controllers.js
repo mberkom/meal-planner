@@ -298,7 +298,7 @@ define("controllers", [
     function _saveToRecents() {
       var original = angular.fromJson(window.localStorage['recentMeals']) || [];
       original.push($scope.meal._id);
-      window.localStorage['recentMeals'] = angular.toJson(_.uniq(original));
+      window.localStorage['recentMeals'] = angular.toJson(_.compact(_.uniq(original)));
     };
 
     /*
