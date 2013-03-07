@@ -18,6 +18,20 @@ define("controllers", [
   angular.module("controllers", ["services"]);
 
   /*
+   * StartCtrl
+   * Handles the home page.
+   */
+  angular.module("controllers").controller("StartCtrl", function($scope, Meal) {
+    $scope.recentMeals = _.map(_recentMealIds(), function(mealId) {
+      return Meal.get({id: mealId})
+    });
+
+    function _recentMealIds() {
+      return angular.fromJson(window.localStorage['recentMeals']) || [];
+    };
+  });
+
+  /*
    * NewGroupMealCtrl
    * Handles creating new group meals.
    */
@@ -249,6 +263,7 @@ define("controllers", [
       if($routeParams.id != null && !$scope.savingMeal == true) {      
         $scope.meal = Meal.get({id: $routeParams.id}, function() {
           _replaceCurrentItem();
+          _saveToRecents();
         });
         window.setTimeout(_loadMeal, 5000);
       }
@@ -274,6 +289,16 @@ define("controllers", [
         });
         $scope.currentItem = newVersion;
       }
+    };
+
+    /*
+     * Private: Save this meal to recents so when you come back
+     * you can easily find it again.
+     */
+    function _saveToRecents() {
+      var original = angular.fromJson(window.localStorage['recentMeals']) || [];
+      original.push($scope.meal._id);
+      window.localStorage['recentMeals'] = angular.toJson(_.uniq(original));
     };
 
     /*

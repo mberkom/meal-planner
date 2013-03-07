@@ -1,7 +1,15 @@
-<h1>Meal Planner</h1>
-<p>Plan meals with ease. No logins. No Hassle.</p>
+<h1 class="centered">Hassle Free Meal Planning</h1>
+<h3 class="centered text-normal">Plan meals with ease. No logins. No Hassle.</h3>
 
-<div class="btn-toolbar">
-  <a href="#/group/new" class="btn btn-success">Create Group Meal</a>
-  <a href="#/scheduled/new" class="btn btn-info">Create Scheduled Meal</a>
+<div class="row-fluid margin-top-small margin-bottom-small">
+  <div class="btn-toolbar centered">
+    <a href="#/group/new" class="btn btn-huge btn-success">Create Group Meal</a>
+  </div>
+
+  <div class="span6 offset3 margin-top-small" ng-show="recentMeals.length > 0">
+    <h4>Meals You've Visited Recently</h4>
+    <ul ng-repeat="meal in recentMeals">
+      <li><a href="/#/meals/{{meal._id}}">{{meal.name}}</a></li>
+    </ul>
+  </div>
 </div>

@@ -12,9 +12,27 @@ a {
   text-align: center;
 }
 
+.margin-top-small {
+  margin-top: 15px;
+}
+
+.margin-bottom-small {
+  margin-bottom: 15px;
+}
+
 /* Bootstrap Additions */
 input.input-large {
   height: 40px;
   font-size: 18px;
+}
+.text-normal {
+  font-weight: normal;
+}
+.text-success {
+  font-color: #7fbc2f !important;
+}
+.btn-huge {
+  font-size: 30px;
+  padding: 20px;
 }
 /* End Bootstrap Additions */

@@ -16,7 +16,7 @@ define("app", ["jquery", "lodash", "jquery-ui", "angular", "controllers", "direc
     when("/group/new",     { templateUrl: baseUrl + "group/new.html", controller: "NewGroupMealCtrl" }).
     when("/scheduled/new", { templateUrl: baseUrl + "scheduled/new.html", controller: "NewScheduledMealCtrl" }).
     when("/meals/:id",     { templateUrl: baseUrl + "group/show.html", controller: "ShowMealCtrl" }).
-    otherwise({ redirectTo: "/", templateUrl: baseUrl + "start.html" })
+    otherwise({ redirectTo: "/", templateUrl: baseUrl + "start.html", controller: "StartCtrl" })
   });
 
   // Bootstrap the app
