@@ -10,5 +10,9 @@
     "jade": "*",
     "mongoose": "*",
     "gzippo": "*"
+  },
+	"engines": {
+    "node": "0.8.x",
+    "npm":  "1.2.x"
   }
 }
