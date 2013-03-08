@@ -4,9 +4,10 @@
  */
 
 var mongoose = require('mongoose'),
-    Schema   = mongoose.Schema;
+    Schema   = mongoose.Schema,
+		connUri  = process.env.MONGOHQ_URL || "mongodb://localhost/meal-planner";
 
-mongoose.connect('localhost', 'meal-planner');
+mongoose.connect(connUri);
 
 var bringers = new Schema({
   name:     String,
