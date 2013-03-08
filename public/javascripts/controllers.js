@@ -156,7 +156,7 @@ define("controllers", [
    * ShowMealCtrl
    * Displays meals based on an ID.
    */
-  angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, Meal) {
+  angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, $http, Meal) {
     _loadMeal();
     $scope.userName = window.localStorage['userName'] || null;
 
@@ -273,8 +273,7 @@ define("controllers", [
      * Private: Save the meal.
      */
     function _saveMeal() {
-      $scope.meal.$update({id: $routeParams.id});
-      _loadMeal();
+      $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
     };
 
     /*
