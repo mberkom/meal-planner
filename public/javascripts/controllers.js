@@ -161,6 +161,13 @@ define("controllers", [
     $scope.userName = window.localStorage['userName'] || null;
 
     /*
+     * Public: Check whether a meal has been loaded or not.
+     */
+    $scope.mealIsPresent = function() {
+      return !_.isUndefined($scope.meal);
+    };
+
+    /*
      * Public: Start bringing an item.
      */
     $scope.startBringing = function(item) {

@@ -1,82 +1,82 @@
-<ul class="breadcrumb">
-  <li><a href="/#/">Home</a> <span class="divider">&gt;</span></li>
-  <li class="active">{{meal.name}}</li>
-</ul>
+<div ng-show="mealIsPresent()">  
+  <ul class="breadcrumb">
+    <li><a href="/#/">Home</a> <span class="divider">&gt;</span></li>
+    <li class="active">{{meal.name}}</li>
+  </ul>
 
-<div class="row-fluid">
-  <div class="span6"><h1>{{meal.name}}</h1></div>
-  <div class="span6"><h3 class="muted pull-right">{{meal.location}}, {{meal.date}}</h3></div>
-</div>
-
-
-
-<!-- Meal Items -->
-<div class="row-fluid">
-  <h3>Items</h3>
-  <div class="alert alert-warning">
-    The following items need to be brought.  Click on "I'm bringing this" to tell the organizer it is being brought.
+  <div class="row-fluid">
+    <div class="span6"><h1>{{meal.name}}</h1></div>
+    <div class="span6"><h3 class="muted pull-right">{{meal.location}}, {{meal.date}}</h3></div>
   </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th class="span2">Remaining</th>
-        <th class="span5">Item</th>
-        <th>Who is bringing it?</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="item in meal.mealItems | orderBy:'name' ">   
-        <td>
-          <h4 ng-class="{'text-success': isFilledUp(item)}">{{remainingQuantity(item)}} <small class="muted text-normal">out of</small> {{item.quantity}}</h4>
-        </td>
-        <td>
-          <h4 ng-class="{'text-success': isFilledUp(item)}">
-            <i class="icon-ok" ng-show="isFilledUp(item)"></i> {{item.name}}<br />
-            <small ng-show="isFilledUp(item)">Enough of this item is being brought!</small>
-          </h4>
-        </td>
-        <td>
-          <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</h4>
-          <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-cupid-green pull-right">I'm Bringing This</a>
-          <ul class="unstyled" ng-repeat="bringer in item.bringers">
-            <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
-          </ul>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- End Meal Items -->
 
-<!-- Bring Item Modal -->
-<div id="bringItemModal" class="modal hide fade">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3>Bring Item</h3>
-  </div>
-  <div class="modal-body">
-    <h4>You are signing up to bring "{{currentItem.name}}".</h4>
-    <div class="alert alert-info" ng-show="isFilledUp(currentItem)">
-      Enough of this item is already being brought!  Someone signed up while you were waiting.
+  <!-- Meal Items -->
+  <div class="row-fluid">
+    <h3>Items</h3>
+    <div class="alert alert-warning">
+      The following items need to be brought.  Click on "I'm bringing this" to tell the organizer it is being brought.
     </div>
-    
-    <div ng-show="!isFilledUp(currentItem)" class="row-fluid">
-      <div class="span6">      
-        <label for="currentQuantity">How many are you bringing?</label>
-        <input type="number" id="currentQuantity" ng-model="bringingQuantity" />
-        <p class="help-text muted">Out of <strong>{{remainingQuantity(currentItem)}}</strong> remaining.</p>
-      </div> 
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="span2">Remaining</th>
+          <th class="span5">Item</th>
+          <th>Who is bringing it?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in meal.mealItems | orderBy:'name' ">   
+          <td>
+            <h4 ng-class="{'text-success': isFilledUp(item)}">{{remainingQuantity(item)}} <small class="muted text-normal">out of</small> {{item.quantity}}</h4>
+          </td>
+          <td>
+            <h4 ng-class="{'text-success': isFilledUp(item)}">
+              <i class="icon-ok" ng-show="isFilledUp(item)"></i> {{item.name}}<br />
+              <small ng-show="isFilledUp(item)">Enough of this item is being brought!</small>
+            </h4>
+          </td>
+          <td>
+            <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</h4>
+            <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-cupid-green pull-right">I'm Bringing This</a>
+            <ul class="unstyled" ng-repeat="bringer in item.bringers">
+              <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- End Meal Items -->
 
-      <div class="span6">      
-        <label for="userName">What is your name?</label>
-        <input type="text" id="userName" ng-model="userName" />
+  <!-- Bring Item Modal -->
+  <div id="bringItemModal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Bring Item</h3>
+    </div>
+    <div class="modal-body">
+      <h4>You are signing up to bring "{{currentItem.name}}".</h4>
+      <div class="alert alert-info" ng-show="isFilledUp(currentItem)">
+        Enough of this item is already being brought!  Someone signed up while you were waiting.
       </div>
+      
+      <div ng-show="!isFilledUp(currentItem)" class="row-fluid">
+        <div class="span6">      
+          <label for="currentQuantity">How many are you bringing?</label>
+          <input type="number" id="currentQuantity" ng-model="bringingQuantity" />
+          <p class="help-text muted">Out of <strong>{{remainingQuantity(currentItem)}}</strong> remaining.</p>
+        </div> 
 
+        <div class="span6">      
+          <label for="userName">What is your name?</label>
+          <input type="text" id="userName" ng-model="userName" />
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a class="btn" ng-click="cancelBringing()">Cancel</a>
+      <a class="btn btn-cupid-green" ng-show="!isFilledUp(currentItem)" ng-click="bringCurrentItem()"><i class="icon-ok icon-white"></i> Bring This Item</a>
     </div>
   </div>
-  <div class="modal-footer">
-    <a class="btn" ng-click="cancelBringing()">Cancel</a>
-    <a class="btn btn-cupid-green" ng-show="!isFilledUp(currentItem)" ng-click="bringCurrentItem()"><i class="icon-ok icon-white"></i> Bring This Item</a>
-  </div>
+  <!-- End Bring Item Modal -->
 </div>
-<!-- End Bring Item Modal -->
