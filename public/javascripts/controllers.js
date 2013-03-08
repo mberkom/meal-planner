@@ -273,7 +273,8 @@ define("controllers", [
      * Private: Save the meal.
      */
     function _saveMeal() {
-      $scope.meal.$update({id: $routeParams.id});
+      var meal = $scope.meal;
+      meal.$update({id: $routeParams.id});
       // _loadMeal();
     };
 
