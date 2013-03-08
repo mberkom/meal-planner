@@ -273,9 +273,8 @@ define("controllers", [
      * Private: Save the meal.
      */
     function _saveMeal() {
-      console.log($scope.meal.mealItems);
       $scope.meal.$update({id: $routeParams.id});
-      _loadMeal();
+      // _loadMeal();
     };
 
     /*
