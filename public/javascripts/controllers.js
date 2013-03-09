@@ -164,6 +164,7 @@ define("controllers", [
 
     socket.on('updatedMeal-' + $routeParams.id, function(meal) {
       $scope.meal = meal;
+      _replaceCurrentItem();
       $scope.$apply();
     });
 
