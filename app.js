@@ -44,6 +44,12 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 
 // Socket.io configuration
 var io  = require('socket.io').listen(server);
+
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 2); 
+});
+
 io.sockets.on('connection', function (client) {
   console.log("Socket client connected.");
 
