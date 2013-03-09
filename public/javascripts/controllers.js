@@ -296,7 +296,7 @@ define("controllers", [
      */
     function _replaceCurrentItem() {
       var originalItem = $scope.currentItem;
-      if(!_.isUndefined(originalItem)) {
+      if(!_.isUndefined(originalItem) && originalItem !== null) {
         var newVersion = _.find($scope.meal.mealItems, function(i) { 
           return i._id == originalItem._id 
         });
