@@ -6,13 +6,15 @@
 define("controllers", [
   "jquery", 
   "lodash", 
+  "bootbox",
+  "socket.io", 
   "bootstrap", 
-  "bootbox", 
   "angular", 
   "services"
-], function($, _, bootbox) {
+], function($, _, bootbox, io) {
   var angular = window.angular
-    , bootbox = window.bootbox;
+    , bootbox = window.bootbox
+    , socket  = io.connect("/");
 
   // Configure controller dependencies
   angular.module("controllers", ["services"]);
@@ -160,6 +162,10 @@ define("controllers", [
     _loadMeal();
     $scope.userName = window.localStorage['userName'] || null;
 
+    socket.on('updatedMeal', function(meal) {
+      _loadMeal();
+    });
+
     /*
      * Public: Check whether a meal has been loaded or not.
      */
@@ -267,12 +273,11 @@ define("controllers", [
      * 3 seconds to make sure the page stays updated.
      */
     function _loadMeal() {
-      if($routeParams.id != null && !$scope.savingMeal == true) {      
+      if($routeParams.id != null) {      
         $scope.meal = Meal.get({id: $routeParams.id}, function() {
           _replaceCurrentItem();
           _saveToRecents();
         });
-        window.setTimeout(_loadMeal, 5000);
       }
     };
 
@@ -281,6 +286,7 @@ define("controllers", [
      */
     function _saveMeal() {
       $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
+      socket.emit('updatedMeal', $scope.toJson());
     };
 
     /*

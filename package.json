@@ -9,7 +9,8 @@
     "express": "3.1.0",
     "jade": "*",
     "mongoose": "*",
-    "gzippo": "*"
+    "gzippo": "*",
+    "socket.io": "*"
   },
 	"engines": {
     "node": "0.8.x",

@@ -38,6 +38,17 @@ app.post('/api/meals.json', meal.create);
 app.get('/api/meals/:id.json', meal.show);
 app.put('/api/meals/:id.json', meal.update);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
+});
+
+// Socket.io configuration
+var io  = require('socket.io').listen(server);
+io.sockets.on('connection', function (client) {
+  console.log("Socket client connected.");
+
+  client.on('updatedMeal', function(data) {
+    console.log("Broadcasing meal:" + data);
+    client.broadcast.emit('updatedMeal', data);
+  });
 });
