@@ -49,6 +49,6 @@ io.sockets.on('connection', function (client) {
 
   client.on('updatedMeal', function(data) {
     console.log("Broadcasing meal:" + data);
-    client.broadcast.emit('updatedMeal', data);
+    client.broadcast.emit('updatedMeal-' + data._id, data);
   });
 });

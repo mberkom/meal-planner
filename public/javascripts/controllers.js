@@ -159,11 +159,12 @@ define("controllers", [
    * Displays meals based on an ID.
    */
   angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, $http, Meal) {
-    _loadMeal();
+    $scope.meal     = _loadMeal();
     $scope.userName = window.localStorage['userName'] || null;
 
-    socket.on('updatedMeal', function(meal) {
-      _loadMeal();
+    socket.on('updatedMeal-' + $routeParams.id, function(meal) {
+      $scope.meal = meal;
+      $scope.$apply();
     });
 
     /*
@@ -274,7 +275,7 @@ define("controllers", [
      */
     function _loadMeal() {
       if($routeParams.id != null) {      
-        $scope.meal = Meal.get({id: $routeParams.id}, function() {
+        return Meal.get({id: $routeParams.id}, function() {
           _replaceCurrentItem();
           _saveToRecents();
         });
@@ -286,7 +287,7 @@ define("controllers", [
      */
     function _saveMeal() {
       $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
-      socket.emit('updatedMeal', $scope.toJson());
+      socket.emit('updatedMeal', $scope.meal);
     };
 
     /*
@@ -335,12 +336,4 @@ define("controllers", [
       return broughtQuantity;
     };
   });
-
-  /*
-   * NewScheduledMealCtrl
-   * Handles creating new scheduled meals.
-   */
-  angular.module("controllers").controller("NewScheduledMealCtrl", function($scope) {
-  });
-
 });
