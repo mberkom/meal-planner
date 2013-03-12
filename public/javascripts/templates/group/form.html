@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-  <li><a class="pointer" ng-click="cancel()">Home</a> <span class="divider">&gt;</span></li>
+  <li><a class="pointer" ng-click="cancel('home')">Home</a> <span class="divider">&gt;</span></li>
   <li class="active">{{headerTitle()}}</li>
 </ul>
 
@@ -32,8 +32,9 @@
     <thead>
       <tr>
         <th class="span1">Quantity</th>
-        <th class="span8">Item</th>
+        <th class="span7">Item</th>
         <th>Assigned To</th>
+        <th></th>
       </tr>
     </thead>
     <tfoot>
@@ -45,6 +46,7 @@
             <input type="text" class="span12" ng-model="newItemAssigned" placeholder="Leave blank to let anyone claim" />
             <input type="submit" class="btn" style="visibility:hidden;" value="Add" />
           </td>
+          <td><input type="submit" class="btn btn-cupid-green" value="Add" /></td>
         </form>
       </tr>
     </tfoot>
@@ -52,8 +54,8 @@
       <tr ng-repeat="item in meal.mealItems | orderBy:'name'">   
         <td><span class="centered">{{item.quantity}}</span></td>
         <td>{{item.name}}</td>
+        <td>{{item.assigned || "No One"}}</td>
         <td>
-          {{item.assigned || "No One"}}
           <span class="pull-right">
             <a class="text-error pointer" ng-click="removeMealItem(item)">X Remove</a>
           </span>

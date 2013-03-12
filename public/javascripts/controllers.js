@@ -43,7 +43,10 @@ define("controllers", [
       $scope.existing = true;
       $scope.meal = Meal.get({id: $routeParams.id});
     } else {
-      $scope.meal = angular.fromJson(window.localStorage['newGroupMeal']) || {};
+      var structure = {
+        mealItems: []
+      };
+      $scope.meal = angular.fromJson(window.localStorage['newGroupMeal']) || structure;
     }
 
     $scope.headerTitle = function() {
@@ -109,8 +112,8 @@ define("controllers", [
     /*
      * Public: Clear local storage and go back to path "/".
      */
-    $scope.cancel = function() {
-      var warningText = "Are you sure you want to cancel and go back to the home page?  You have unsaved changes.";
+    $scope.cancel = function(redirectTo) {
+      var warningText = "Are you sure you want to cancel and go back?  You have unsaved changes.";
       bootbox.dialog(warningText, [{
         "label": "No",
         "callback": function() {}
@@ -119,7 +122,12 @@ define("controllers", [
         "class": "btn-plum",
         "callback": function() {
           _clearLocalStorage();
-          $location.path("/").replace();
+          if ($scope.existing !== true || redirectTo == "home") {
+            $location.path("/").replace();
+          } else {
+            $location.path("/meals/" + $routeParams.id);
+          }
+          $scope.existing = false;
           $scope.$apply();
         }
       }]);
