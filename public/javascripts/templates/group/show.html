@@ -18,7 +18,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="span2">Remaining</th>
+          <th class="span2">Quantity</th>
           <th class="span5">Item</th>
           <th>Who is bringing it?</th>
         </tr>
@@ -26,7 +26,7 @@
       <tbody>
         <tr ng-repeat="item in meal.mealItems | orderBy:'name' ">   
           <td>
-            <h4 ng-class="{'text-success': isFilledUp(item)}">{{remainingQuantity(item)}} <small class="muted text-normal">out of</small> {{item.quantity}}</h4>
+            <h4 ng-class="{'text-success': isFilledUp(item)}">{{totalQuantity(item)}} <small class="muted text-normal">out of</small> {{item.quantity}}</h4>
           </td>
           <td>
             <h4 ng-class="{'text-success': isFilledUp(item)}">
@@ -38,7 +38,7 @@
             <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</h4>
             <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-cupid-green pull-right">I'm Bringing This</a>
             <ul class="unstyled" ng-repeat="bringer in item.bringers">
-              <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
+              <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error pointer" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
             </ul>
           </td>
         </tr>

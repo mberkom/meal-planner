@@ -8,6 +8,10 @@ a {
   color: #00B7FF;
 }
 
+a.pointer:hover {
+  cursor: pointer;
+}
+
 .centered {
   margin: 0 auto;
   text-align: center;
