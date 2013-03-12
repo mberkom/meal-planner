@@ -29,7 +29,7 @@ app.configure('development', function(){
 });
 
 app.configure('production', function() {
-  app.use(gzippo.staticGzip(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'public')));
 })
 
 app.get('/', routes.index);

@@ -146,6 +146,7 @@ define("controllers", [
     function _saveExistingMeal() {
       $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
       _saveOwner($routeParams.id);
+      socket.emit('updatedMeal', $scope.meal);
       $location.path("/meals/" + $scope.meal._id);
     };
 
