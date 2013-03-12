@@ -1,10 +1,14 @@
 {
   "name": "meal-planner",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
+  "domains": [
+    "hasslefreemeals.net",
+    "www.hasslefreemeals.net"
+  ],
   "dependencies": {
     "express": "3.1.0",
     "jade": "*",
