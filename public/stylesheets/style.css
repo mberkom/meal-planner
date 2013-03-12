@@ -4,8 +4,16 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+h1 {
+  color: #321354;
+}
+
 a {
-  color: #00B7FF;
+  color: #a347b7;
+}
+
+a:hover {
+  color: #8847b7;
 }
 
 a.pointer:hover {
@@ -29,6 +37,9 @@ a.pointer:hover {
 input.input-large {
   height: 40px;
   font-size: 18px;
+}
+.text-small {
+  font-size: 16px;
 }
 .text-normal {
   font-weight: normal;

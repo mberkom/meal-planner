@@ -1,25 +1,25 @@
 <ul class="breadcrumb">
-  <li><a ng-click="cancel()">Home</a> <span class="divider">&gt;</span></li>
-  <li class="active">Create Group Meal</li>
+  <li><a class="pointer" ng-click="cancel()">Home</a> <span class="divider">&gt;</span></li>
+  <li class="active">{{headerTitle()}}</li>
 </ul>
 
 <!-- Info Fields -->
-<h1>Create a Group Meal</h1>
+<h1>{{headerTitle()}}</h1>
 <div class="row-fluid">  
 
   <div class="span4">  
     <label for="name">Name Your Meal:</label>
-    <input type="text" id="name" class="span12 input-large" ng-model="name" placeholder="e.g. 'Amy's Baby Shower'" />
+    <input type="text" id="name" class="span12 input-large" ng-model="meal.name" placeholder="e.g. 'Amy's Baby Shower'" />
   </div>
 
   <div class="span4">  
     <label for="date">When is it happening?</label>
-    <input type="text" datepicker id="date" class="span12 input-large" ng-model="date" placeholder="Click to add a date" />
+    <input type="text" datepicker id="date" class="span12 input-large" ng-model="meal.date" placeholder="Click to add a date" />
   </div>
 
   <div class="span4">  
     <label for="where">Where:</label>
-    <input type="text" id="where" class="span12 input-large" ng-model="location" placeholder="Put the location here" />
+    <input type="text" id="where" class="span12 input-large" ng-model="meal.location" placeholder="Put the location here" />
   </div>
 </div>
 <!-- End Info Fields -->
@@ -32,7 +32,7 @@
     <thead>
       <tr>
         <th class="span1">Quantity</th>
-        <th class="span10">Item</th>
+        <th class="span8">Item</th>
         <th>Assigned To</th>
       </tr>
     </thead>
@@ -49,13 +49,13 @@
       </tr>
     </tfoot>
     <tbody>
-      <tr ng-repeat="item in mealItems | orderBy:'name'">   
+      <tr ng-repeat="item in meal.mealItems | orderBy:'name'">   
         <td><span class="centered">{{item.quantity}}</span></td>
         <td>{{item.name}}</td>
         <td>
           {{item.assigned || "No One"}}
           <span class="pull-right">
-            <a class="text-error" ng-click="removeMealItem(item)">X Remove</a>
+            <a class="text-error pointer" ng-click="removeMealItem(item)">X Remove</a>
           </span>
         </td>
       </tr>
@@ -66,6 +66,6 @@
 
 <!-- Save Group Meal -->
 <div class="btn-toolbar">
-  <a ng-click="cancel()" class="btn btn-large">Cancel</a>
-  <a ng-click="save()" class="btn btn-cupid-green btn-large">Create Meal</a>
+  <a ng-click="cancel()" class="btn btn-large btn-plum">Cancel</a>
+  <a ng-click="save()" class="btn btn-cupid-green btn-large">{{buttonText()}}</a>
 </div>

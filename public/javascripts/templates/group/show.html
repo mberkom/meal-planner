@@ -5,14 +5,23 @@
   </ul>
 
   <div class="row-fluid">
-    <div class="span6"><h1>{{meal.name}}</h1></div>
-    <div class="span6"><h3 class="muted pull-right">{{meal.location}}, {{meal.date}}</h3></div>
+    <h1>
+      {{meal.name}}
+      <small class="pull-right text-small margin-top-small">      
+        <a href="#/meals/{{meal._id}}/edit" ng-show="isOwner()">Edit This Meal</a>
+      </small>
+    </h1>
+    <h3 class="muted">{{meal.location}}, {{meal.date}}</h3>
   </div>
 
   <!-- Meal Items -->
   <div class="row-fluid">
+    <div class="alert" ng-show="isOwner()">
+      Copy the link in your browser URL bar and send it meal to everyone who is invited.  Only people with the link can see the meal.
+    </div>
+
     <h3>Items</h3>
-    <div class="alert alert-warning">
+    <div class="alert alert-warning" ng-show="!isOwner()">
       The following items need to be brought.  Click on "I'm bringing this" to tell the organizer it is being brought.
     </div>
     <table class="table table-striped">
@@ -30,12 +39,12 @@
           </td>
           <td>
             <h4 ng-class="{'text-success': isFilledUp(item)}">
-              <i class="icon-ok" ng-show="isFilledUp(item)"></i> {{item.name}}<br />
+              {{item.name}}<br />
               <small ng-show="isFilledUp(item)">Enough of this item is being brought!</small>
             </h4>
           </td>
           <td>
-            <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0">{{item.assigned || "No One"}}</h4>
+            <h4 class="pull-left text-normal" ng-show="totalQuantity(item) == 0 || item.assigned">{{item.assigned || "No One"}}</h4>
             <a ng-show="!item.assigned && !isFilledUp(item)" ng-click="startBringing(item)" class="btn btn-cupid-green pull-right">I'm Bringing This</a>
             <ul class="unstyled" ng-repeat="bringer in item.bringers">
               <li><strong>{{bringer.name}}</strong> is bringing <strong>{{bringer.quantity}}</strong> <a class="text-error pointer" ng-show="bringer.name == userName" ng-click="removeBringer(item, bringer)">x</a></li>
@@ -74,7 +83,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a class="btn" ng-click="cancelBringing()">Cancel</a>
+      <a class="btn btn-plum" ng-click="cancelBringing()">Cancel</a>
       <a class="btn btn-cupid-green" ng-show="!isFilledUp(currentItem)" ng-click="bringCurrentItem()"><i class="icon-ok icon-white"></i> Bring This Item</a>
     </div>
   </div>

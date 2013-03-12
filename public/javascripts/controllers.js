@@ -37,19 +37,36 @@ define("controllers", [
    * NewGroupMealCtrl
    * Handles creating new group meals.
    */
-  angular.module("controllers").controller("NewGroupMealCtrl", function($scope, $http, $location) {
+  angular.module("controllers").controller("EditGroupMealCtrl", function($scope, $http, $location, $routeParams, Meal) {
     // Set up data, using localStorage if possible
-    var storedMeal    = angular.fromJson(window.localStorage['newGroupMeal']) || {};
-    $scope.name       = storedMeal.name;
-    $scope.date       = storedMeal.date;
-    $scope.location   = storedMeal.location;
-    $scope.mealItems  = storedMeal.mealItems || [];
+    if ($routeParams.id) {
+      $scope.existing = true;
+      $scope.meal = Meal.get({id: $routeParams.id});
+    } else {
+      $scope.meal = angular.fromJson(window.localStorage['newGroupMeal']) || {};
+    }
+
+    $scope.headerTitle = function() {
+      if($scope.existing == true) {
+        return "Edit " + $scope.meal.name;
+      } else {
+        return "Create a Group Meal";
+      }
+    };
+
+    $scope.buttonText = function() {
+      if($scope.existing == true) {
+        return "Save Changes";
+      } else {
+        return "Create Meal";
+      }
+    };
 
     /*
      * Public: Add a meal item to the mealItems array.
      */
     $scope.addMealItem = function() {
-      $scope.mealItems.push({
+      $scope.meal.mealItems.push({
         name:     $scope.newItemName,
         quantity: $scope.newItemQuantity || 0,
         assigned: $scope.newItemAssigned
@@ -64,49 +81,27 @@ define("controllers", [
      * item - The item Object to remove from the array.
      */
     $scope.removeMealItem = function(item) {
-      var newList = _.reject($scope.mealItems, function(i) { return i.name == item.name });
-      $scope.mealItems = newList;
+      var newList = _.reject($scope.meal.mealItems, function(i) { return i.name == item.name });
+      $scope.meal.mealItems = newList;
       _focus("newItemQuantity");
     };
-
-    /*
-     * Public: Add an email to the emails array.
-     */
-    $scope.addEmail = function() {
-      $scope.emails.push($scope.newEmail);
-      $scope.newEmail = null;
-      _focus("newEmail");
-    };
-
-    /*
-     * Public: Remove an email from the emails array.
-     */
-    $scope.removeEmail = function(email) {
-      var newEmails = _.reject($scope.emails, function(e) { return e == email });
-      $scope.emails = newEmails;
-    }
 
     /*
      * Public: Convert new Group Meal to JSON.
      */
     $scope.toJson = function() {
-      return angular.toJson({
-        name:       $scope.name,
-        date:       $scope.date,
-        location:   $scope.location,
-        mealItems:  $scope.mealItems,
-        emails:     $scope.emails
-      });
+      return angular.toJson($scope.meal);
     };
 
     /*
      * Public: Save the group meal to the API.
      */
     $scope.save = function() {
-      $http.post("/api/meals.json", { meal: $scope.toJson() }).success(function(response) {
-        _clearLocalStorage();
-        $location.path("/meals/" + response.meal._id);
-      });
+      if ($scope.existing == true) {
+        _saveExistingMeal();
+      } else {
+        _saveNewMeal();
+      }
     };
 
     /*
@@ -114,13 +109,18 @@ define("controllers", [
      */
     $scope.cancel = function() {
       var warningText = "Are you sure you want to cancel and go back to the home page?  You have unsaved changes.";
-      bootbox.confirm(warningText, "No", "Yes", function(cancel) {      
-        if(cancel === true) {
+      bootbox.dialog(warningText, [{
+        "label": "No",
+        "callback": function() {}
+      },{
+        "label": "Yes",
+        "class": "btn-plum",
+        "callback": function() {
           _clearLocalStorage();
           $location.path("/").replace();
           $scope.$apply();
-        };
-      });
+        }
+      }]);
     };
 
     /*
@@ -129,6 +129,35 @@ define("controllers", [
     $scope.$watch("toJson()", function(result) {
       window.localStorage['newGroupMeal'] = result;
     });
+
+    /*
+     * Private: Save an existing meal.
+     */
+    function _saveExistingMeal() {
+      $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
+      _saveOwner($routeParams.id);
+      $location.path("/meals/" + $scope.meal._id);
+    };
+
+    /*
+     * Private: Save a new meal.
+     */
+    function _saveNewMeal() {
+      $http.post("/api/meals.json", { meal: $scope.toJson() }).success(function(response) {
+        _clearLocalStorage();
+        _saveOwner(response.meal._id);
+        $location.path("/meals/" + response.meal._id);
+      });
+    };
+
+    /*
+     * Private: Save ownership of the meal.
+     */
+    function _saveOwner(id) {
+      var ownedMeals = angular.fromJson(window.localStorage['ownedMeals']) || [];
+      ownedMeals.push(id);
+      window.localStorage['ownedMeals'] = angular.toJson(_.unique(ownedMeals));
+    };
 
     /*
      * Private: Clear the new meal item data.
@@ -167,6 +196,14 @@ define("controllers", [
       _replaceCurrentItem();
       $scope.$apply();
     });
+
+    /*
+     * Public: Check whether user is owner of of meal or not.
+     */
+    $scope.isOwner = function() {
+      var ownedMeals = angular.fromJson(window.localStorage['ownedMeals']);
+      return _.contains(ownedMeals, $routeParams.id);
+    };
 
     /*
      * Public: Check whether a meal has been loaded or not.
@@ -229,7 +266,11 @@ define("controllers", [
      * Returns a Number.
      */
     $scope.totalQuantity = function(item) {
-      return _broughtQuantity(item);
+      if (item.assigned !== null && !_.isUndefined(item.assigned)) {
+        return item.quantity;
+      } else {
+        return _broughtQuantity(item);
+      }
     };
 
     /*
