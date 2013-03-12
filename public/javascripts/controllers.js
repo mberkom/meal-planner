@@ -102,6 +102,8 @@ define("controllers", [
       } else {
         _saveNewMeal();
       }
+      _clearLocalStorage();
+      $scope.existing = false;
     };
 
     /*
