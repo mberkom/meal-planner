@@ -45,10 +45,15 @@ var server = http.createServer(app).listen(app.get('port'), function(){
 // Socket.io configuration
 var io  = require('socket.io').listen(server);
 
-// io.configure(function () { 
-//   io.set("transports", ["xhr-polling"]); 
-//   io.set("polling duration", 10); 
-// });
+// Allow easy switching off of websockets
+// via an WEBSOCKETS_DISABLED env var which can
+// be easily set with different hosting providers.
+if (process.env.WEBSOCKETS_DISABLED == true) {
+  io.configure(function () { 
+    io.set("transports", ["xhr-polling"]); 
+    io.set("polling duration", 10); 
+  });
+}
 
 io.sockets.on('connection', function (client) {
   console.log("Socket client connected.");
