@@ -24,10 +24,18 @@ define("controllers", [
    * Handles the home page.
    */
   angular.module("controllers").controller("StartCtrl", function($scope, Meal) {
+		/**
+		 * Public: Find all the recent meals using
+		 * the meals API so we can display their names.
+		 */
     $scope.recentMeals = _.map(_recentMealIds(), function(mealId) {
       return Meal.get({id: mealId})
     });
 
+		/**
+		 * Private: Convert the localStorage 'recentMeals'
+		 * JSON string into an array of IDs we can use.
+		 */
     function _recentMealIds() {
       return angular.fromJson(window.localStorage['recentMeals']) || [];
     };
