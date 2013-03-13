@@ -43,12 +43,17 @@ define("controllers", [
       $scope.existing = true;
       $scope.meal = Meal.get({id: $routeParams.id});
     } else {
-      var structure = {
-        mealItems: []
-      };
+      var structure = { mealItems: [] };
       $scope.meal = angular.fromJson(window.localStorage['newGroupMeal']) || structure;
     }
 
+		/*
+		 * Public: Display a header for the edit meal page.
+		 * Changes based on whether this is an existing meal
+		 * or a new meal.
+		 *
+		 * Returns a String.
+		 */
     $scope.headerTitle = function() {
       if($scope.existing == true) {
         return "Edit " + $scope.meal.name;
@@ -57,6 +62,13 @@ define("controllers", [
       }
     };
 
+		/*
+		 * Public: Display different text for the save button
+		 * depending on whether this is an existing meal or
+		 * a new meal.
+		 *
+		 * Returns a String.
+		 */
     $scope.buttonText = function() {
       if($scope.existing == true) {
         return "Save Changes";
@@ -67,6 +79,7 @@ define("controllers", [
 
     /*
      * Public: Add a meal item to the mealItems array.
+		 * Uses newItemName, newItemQuantity, and newItemAssigned.
      */
     $scope.addMealItem = function() {
       $scope.meal.mealItems.push({
@@ -91,6 +104,9 @@ define("controllers", [
 
     /*
      * Public: Convert new Group Meal to JSON.
+		 *
+		 * Returns String representation of the meal, formatted
+		 * as JSON.
      */
     $scope.toJson = function() {
       return angular.toJson($scope.meal);
@@ -98,6 +114,7 @@ define("controllers", [
 
     /*
      * Public: Save the group meal to the API.
+		 * Also clears local storage.
      */
     $scope.save = function() {
       if ($scope.existing == true) {
@@ -110,7 +127,10 @@ define("controllers", [
     };
 
     /*
-     * Public: Clear local storage and go back to path "/".
+     * Public: Display a confirm message.
+		 * If the user selects "No", do nothing.
+		 * If the user selects "Yes", clear  local storage 
+		 * and go back to path "/".
      */
     $scope.cancel = function(redirectTo) {
       var warningText = "Are you sure you want to cancel and go back?  You have unsaved changes.";
@@ -135,13 +155,16 @@ define("controllers", [
 
     /*
      * Internal: Watch toJson() and update localStorage.
+		 * This ensures that local storage is always up to date
+		 * with the latest version of the meal.
      */
     $scope.$watch("toJson()", function(result) {
       window.localStorage['newGroupMeal'] = result;
     });
 
     /*
-     * Private: Save an existing meal.
+     * Private: Save an existing meal to the API.
+		 * Redirects to /meal/<meal id>.
      */
     function _saveExistingMeal() {
       $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
@@ -151,7 +174,8 @@ define("controllers", [
     };
 
     /*
-     * Private: Save a new meal.
+     * Private: Save a new meal to the API.
+		 * Redirects to /meal/<meal id>
      */
     function _saveNewMeal() {
       $http.post("/api/meals.json", { meal: $scope.toJson() }).success(function(response) {
@@ -162,7 +186,8 @@ define("controllers", [
     };
 
     /*
-     * Private: Save ownership of the meal.
+     * Private: Save ownership of the meal to the
+		 * 'ownedMeals' array in localStorage.
      */
     function _saveOwner(id) {
       var ownedMeals = angular.fromJson(window.localStorage['ownedMeals']) || [];
@@ -196,7 +221,8 @@ define("controllers", [
 
   /*
    * ShowMealCtrl
-   * Displays meals based on an ID.
+   * Displays meals based on an ID, and allows users
+	 * to sign up to bring items.
    */
   angular.module("controllers").controller("ShowMealCtrl", function($scope, $routeParams, $http, Meal) {
     $scope.meal     = _loadMeal();
@@ -210,6 +236,8 @@ define("controllers", [
 
     /*
      * Public: Check whether user is owner of of meal or not.
+		 *
+		 * Returns a Boolean.
      */
     $scope.isOwner = function() {
       var ownedMeals = angular.fromJson(window.localStorage['ownedMeals']);
@@ -218,6 +246,8 @@ define("controllers", [
 
     /*
      * Public: Check whether a meal has been loaded or not.
+		 *
+		 * Returns a Boolean.
      */
     $scope.mealIsPresent = function() {
       return !_.isUndefined($scope.meal);
@@ -260,7 +290,7 @@ define("controllers", [
     /*
      * Public: Determine remaining quantity for given item.
      *
-     * item - An Object
+     * item - A mealItem from the $scope.meal.mealItems array.
      *
      * Returns a Number.
      */
@@ -272,7 +302,7 @@ define("controllers", [
     /*
      * Public: Determine total quantity for given item.
      *
-     * item - An Object
+     * item - A mealItem from the $scope.meal.mealItems array.
      *
      * Returns a Number.
      */
@@ -309,7 +339,8 @@ define("controllers", [
     /*
      * Public: Convert the current meal to JSON.
      *
-     * Returns a JSON string.
+     * Returns a String representation of the current meal
+		 * in JSON.
      */
     $scope.toJson = function() {
       return angular.toJson($scope.meal);
@@ -323,9 +354,11 @@ define("controllers", [
     });
 
     /*
-     * Private: Load the meal. Automatically polls again after
-     * 3 seconds to make sure the page stays updated.
-     */
+     * Private: Load the meal.
+		 *
+		 * Returns a Meal service instance, representing the
+		 * response of the /meals/ API for the $routeParams.id.
+		 */
     function _loadMeal() {
       if($routeParams.id != null) {      
         return Meal.get({id: $routeParams.id}, function() {
@@ -337,6 +370,8 @@ define("controllers", [
 
     /*
      * Private: Save the meal.
+		 *
+		 * Saves to the API and emits a websockets event.
      */
     function _saveMeal() {
       $http.put("/api/meals/" + $routeParams.id + ".json", $scope.toJson());
