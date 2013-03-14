@@ -10,7 +10,7 @@ urlRoot = '/__testacular/';
 
 autoWatch = false;
 
-browsers = ['Chrome'];
+browsers = ['PhantomJS'];
 
 singleRun = true;
 

@@ -4,10 +4,9 @@ node_js:
 services: 
  - mongodb
 before_script:
- - ./.travis/scripts/install_chrome.sh
  - npm install -g forever
  - forever start app.js
- - sleep 3
+ - sleep 5
 script:
  - testacular start config/testacular.conf.js
 after_script:
