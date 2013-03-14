@@ -4,7 +4,10 @@ node_js:
 services: 
  - mongodb
 before_script:
- - node app.js &
+ - npm install -g forever
+ - forever start app.js
  - sleep 3
 script:
  - testacular start config/testacular.conf.js
+after_script:
+ - forever stop 0
