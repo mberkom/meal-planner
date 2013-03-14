@@ -15,8 +15,7 @@
     "mongoose": "*",
     "gzippo": "*",
     "socket.io": "*",
-    "testacular": "0.6.0",
-    "forever": "*"
+    "testacular": "0.6.0"
   },
   "engines": {
     "node": "0.8.x",
