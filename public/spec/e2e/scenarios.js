@@ -23,7 +23,7 @@ describe('meal-planner', function() {
     });
 
     it('the button should say "Create Meal"', function() {
-      expect(element("a.btn.btn-cupid-green").html()).toEqual("Create Meal");
+      expect(element("a.btn.btn-cupid-green").html()).toMatch(/Create Meal/);
     });
 
     it('lets you create a meal', function() {
