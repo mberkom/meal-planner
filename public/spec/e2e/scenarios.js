@@ -13,6 +13,7 @@ describe('meal-planner', function() {
   describe('creating a meal', function() {
     beforeEach(function() {
       window.localStorage.clear();
+      browser().navigateTo("/");
       browser().navigateTo("/#/group/new");
       sleep(0.2);
     });
