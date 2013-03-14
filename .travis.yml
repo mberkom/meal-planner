@@ -4,4 +4,4 @@ node_js:
 before_script:
  - npm install
 script:
- - testacular config/testacular.conf.js
+ - testacular start config/testacular.conf.js
