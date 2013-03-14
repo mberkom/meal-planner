@@ -10,4 +10,4 @@ before_script:
 script:
  - testacular start config/testacular.conf.js
 after_script:
- - forever stop 0
+ - forever stopall
