@@ -20,5 +20,10 @@ define("app", ["jquery", "lodash", "jquery-ui", "angular", "controllers", "direc
   });
 
   // Bootstrap the app
-  angular.bootstrap(document, [appName]);
+  $(function() {
+    var appElm = $('html');
+    angular.bootstrap(appElm, [appName]);
+    appElm.addClass('ng-app'); 
+  });
+  // angular.bootstrap(document, [appName]);
 });
