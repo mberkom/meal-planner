@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in meal.mealItems | orderBy:'name' ">   
+        <tr class="items" ng-repeat="item in meal.mealItems | orderBy:'name' ">   
           <td>
             <h4 ng-class="{'text-success': isFilledUp(item)}">{{totalQuantity(item)}} <small class="muted text-normal">out of</small> {{item.quantity}}</h4>
           </td>

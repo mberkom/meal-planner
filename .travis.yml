@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+ - "0.8"
+services: 
+ - mongodb
+before_script:
+ - npm install -g forever
+ - forever start app.js
+ - sleep 3
+script:
+ - testacular start config/testacular.conf.js
+after_script:
+ - forever stopall

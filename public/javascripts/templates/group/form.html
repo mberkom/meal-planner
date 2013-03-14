@@ -46,12 +46,12 @@
             <input type="text" class="span12" ng-model="newItemAssigned" placeholder="Leave blank to let anyone claim" />
             <input type="submit" class="btn" style="visibility:hidden;" value="Add" />
           </td>
-          <td><input type="submit" class="btn btn-cupid-green" value="Add" /></td>
+          <td><input type="submit" id="addBtn" class="btn btn-cupid-green" value="Add" /></td>
         </form>
       </tr>
     </tfoot>
     <tbody>
-      <tr ng-repeat="item in meal.mealItems | orderBy:'name'">   
+      <tr class="items" ng-repeat="item in meal.mealItems | orderBy:'name'">   
         <td><span class="centered">{{item.quantity}}</span></td>
         <td>{{item.name}}</td>
         <td>{{item.assigned || "No One"}}</td>
@@ -69,5 +69,5 @@
 <!-- Save Group Meal -->
 <div class="btn-toolbar">
   <a ng-click="cancel()" class="btn btn-large btn-plum">Cancel</a>
-  <a ng-click="save()" class="btn btn-cupid-green btn-large">{{buttonText()}}</a>
+  <a id="saveBtn" ng-click="save()" class="btn btn-cupid-green btn-large">{{buttonText()}}</a>
 </div>
