@@ -28,41 +28,41 @@
 <div class="row-fluid">
   <h3>Items</h3>
   <p>What food do you need everyone to bring?</p>
-  <table class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th class="span1">Quantity</th>
-        <th class="span7">Item</th>
-        <th>Assigned To</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <form ng-submit="addMealItem()">
-          <td><input type="number" class="span12" ng-model="newItemQuantity" /></td>
-          <td><input type="text" class="span12" ng-model="newItemName" placeholder="Name of food item here" /><p class="centered muted">Press enter to add item</p></td>
+  <form ng-submit="addMealItem()">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th class="span1">Quantity</th>
+          <th class="span7">Item</th>
+          <th>Assigned To</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+            <td><input type="number" class="span12" ng-model="newItemQuantity" /></td>
+            <td><input type="text" class="span12" ng-model="newItemName" placeholder="Name of food item here" /><p class="centered muted">Press enter to add item</p></td>
+            <td>
+              <input type="text" class="span12" ng-model="newItemAssigned" placeholder="Leave blank to let anyone claim" />
+              <input type="submit" class="btn" style="visibility:hidden;" value="Add" />
+            </td>
+            <td><input type="submit" id="addBtn" class="btn btn-cupid-green" value="Add" /></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr class="items" ng-repeat="item in meal.mealItems | orderBy:'name'">   
+          <td><span class="centered">{{item.quantity}}</span></td>
+          <td>{{item.name}}</td>
+          <td>{{item.assigned || "No One"}}</td>
           <td>
-            <input type="text" class="span12" ng-model="newItemAssigned" placeholder="Leave blank to let anyone claim" />
-            <input type="submit" class="btn" style="visibility:hidden;" value="Add" />
+            <span class="pull-right">
+              <a class="text-error pointer" ng-click="removeMealItem(item)">X Remove</a>
+            </span>
           </td>
-          <td><input type="submit" id="addBtn" class="btn btn-cupid-green" value="Add" /></td>
-        </form>
-      </tr>
-    </tfoot>
-    <tbody>
-      <tr class="items" ng-repeat="item in meal.mealItems | orderBy:'name'">   
-        <td><span class="centered">{{item.quantity}}</span></td>
-        <td>{{item.name}}</td>
-        <td>{{item.assigned || "No One"}}</td>
-        <td>
-          <span class="pull-right">
-            <a class="text-error pointer" ng-click="removeMealItem(item)">X Remove</a>
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </tr>
+      </tbody>
+    </table>
+  </form>
 </div>
 <!-- End Meal Items -->
 
