@@ -6,7 +6,7 @@ services:
 before_script:
  - npm install -g forever
  - forever start app.js
- - sleep 20
+ - sleep 3
 script:
  - testacular start config/testacular.conf.js
 after_script:
