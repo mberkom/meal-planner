@@ -353,8 +353,12 @@ define("controllers", [
       _saveMeal();
     };
     
+		/**
+		 * Public: Copy a share link to a meal.
+		 * Opens a prompt which displays the URL.
+		 */
     $scope.copyShareLink = function() {
-        // Only simple workaround... See: http://stackoverflow.com/questions/400212/how-to-copy-to-the-clipboard-in-javascript
+      // Only simple workaround... See: http://stackoverflow.com/questions/400212/how-to-copy-to-the-clipboard-in-javascript
 	  	window.prompt ("Copy to clipboard: Ctrl+C, Enter", $scope.shareLink());
     };
 
