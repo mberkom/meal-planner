@@ -1,3 +1,4 @@
+<h1 class="logo centered">Hassle Free Meals</h1>
 <div ng-show="mealIsPresent()">  
   <ul class="breadcrumb">
     <li><a href="/#/">Home</a> <span class="divider">&gt;</span></li>
@@ -16,8 +17,9 @@
 
   <!-- Meal Items -->
   <div class="row-fluid">
-    <div class="alert" ng-show="isOwner()">
-      Copy the link in your browser URL bar and send it meal to everyone who is invited.  Only people with the link can see the meal.
+    <div class="alert alert-block form-inline" ng-show="isOwner()">
+      <strong>To share:</strong> <a href="mailto:?subject=You've been invited to participate in a meal!" target="_blank">Write an email</a> and copy in the
+      <button type="button" class="btn btn-small" ng-click="copyShareLink()"><span class="icon-share"></span> Share link</button>
     </div>
 
     <h3>Items</h3>

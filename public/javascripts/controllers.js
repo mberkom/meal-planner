@@ -251,7 +251,16 @@ define("controllers", [
       var ownedMeals = angular.fromJson(window.localStorage['ownedMeals']);
       return _.contains(ownedMeals, $routeParams.id);
     };
-
+    
+    /*
+     * Public: Return the current page url
+		 *
+		 * Returns a String.
+     */
+    $scope.shareLink = function() {
+       	return window.location;
+    };
+    
     /*
      * Public: Check whether a meal has been loaded or not.
 		 *
@@ -342,6 +351,11 @@ define("controllers", [
       var originalBringers = item.bringers;
       item.bringers = _.without(originalBringers, bringer);
       _saveMeal();
+    };
+    
+    $scope.copyShareLink = function() {
+        // Only simple workaround... See: http://stackoverflow.com/questions/400212/how-to-copy-to-the-clipboard-in-javascript
+	  	window.prompt ("Copy to clipboard: Ctrl+C, Enter", $scope.shareLink());
     };
 
     /*
