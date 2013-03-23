@@ -32,9 +32,11 @@ Now visit `http://localhost:3000` and everything should be set up!
 
 If you update the changelog, your update should look like this:
 
-> ## Version X.X.X
-> 2013/03/22
-> 
-> * @yourgithubhandle: {describe the change you made.}
+```
+## Version X.X.X
+2013/03/22
+ 
+* @yourgithubhandle: {describe the change you made.}
+```
 
 You should also update the `package.json` to match the new version number.  Continuous integration is set up, so your pull request will be pushed live after it is approved automatically, which makes some of these steps necessary.
