@@ -24,3 +24,7 @@ $ npm install
 $ node app
 ```
 Now visit `http://localhost:3000` and everything should be set up!
+
+## Contributing
+1. Fork the repo
+2. Make your changes, submit pull request **including screenshots**. Use OSX's built in screenshot feature or [Skitch](http://evernote.com/skitch).
