@@ -18,7 +18,7 @@
   <!-- Meal Items -->
   <div class="row-fluid">
     <div class="alert alert-block form-inline" ng-show="isOwner()">
-      <strong>To share:</strong> <a href="mailto:?subject=You've been invited to participate in a meal!" target="_blank">Write an email</a> and copy in the
+			<strong>To share:</strong> <a href="mailto:?subject=You've been invited to participate in a meal!&body=Here's the link: {{shareLink().toString()}}" target="_blank">Write an email</a> or copy the
       <button type="button" class="btn btn-small" ng-click="copyShareLink()"><span class="icon-share"></span> Share link</button>
     </div>
 
