@@ -28,3 +28,13 @@ Now visit `http://localhost:3000` and everything should be set up!
 ## Contributing
 1. Fork the repo
 2. Make your changes, submit pull request **including screenshots**. Use OSX's built in screenshot feature or [Skitch](http://evernote.com/skitch).
+3. If you want attribution, include an update to the CHANGELOG.md file.  The project uses [Semantic Versioning](http://semver.org).
+
+If you update the changelog, your update should look like this:
+
+> ## Version X.X.X
+> 2013/03/22
+> 
+> * @yourgithubhandle: {describe the change you made.}
+
+You should also update the `package.json` to match the new version number.  Continuous integration is set up, so your pull request will be pushed live after it is approved automatically, which makes some of these steps necessary.
